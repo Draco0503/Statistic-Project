@@ -3,21 +3,19 @@ public class Table {
     private static double[][] _table = {{0,0}};
     private int _total;
     private boolean _rangeData = false;
+    private double[] marks;
 
     // Create the Frequency Table univariable template
     public Table(int rows) {
         _table = new double[rows + 1][5];
-        /*_table[0][0] = Double.parseDouble("Table");
-        _table[0][1] = Double.parseDouble("Fabs");
-        _table[0][2] = Double.parseDouble("Frel");
-        _table[0][3] = Double.parseDouble("Facc");
-        _table[0][4] = Double.parseDouble("FRac");*/
         _total = 0;
+        marks = new double[rows];
 
     }
 
+    // Create a new Table
     public Table(int rows, int columns) {
-        _table = new double[rows + 1][columns + 1];
+        _table = new double[rows + 1][columns + 1]; // this +1 is for the title-row and the title-column
         _total = 0;
     }
 
@@ -47,6 +45,7 @@ public class Table {
             _table[i][0] = Integer.parseInt(samples[i]);
         }
         _rangeData = true;
+        // TODO put the marks on the array "marks[]"
     }
 
     // The array "fabs[]" must be ordered
@@ -114,17 +113,31 @@ public class Table {
     /*
     public double median_range() {
 
-    }
+    }*/
 
     public double mode() {
-
-    }*/
+    	//The value with more Fabs
+    	int i = 1, j = 2;
+    	double max = 0.00d;
+    	while(i < _table.length && j < _table.length) {
+    		if(_table[i][1] > _table[j][1]) {
+    			max = _table[i][0];
+    			j++;
+    		}
+    		else {
+    			max = _table[j][1];
+    			i = j + 1;
+    		}
+    	}
+    	return max;
+    }
 
     // Prints the table
     public String toString() {
         StringBuilder table = new StringBuilder();
         table.append("------------------------------------------------\n");
-        table.append("| Table  |"); table.append("|  Fabs  |"); table.append("|  Frel  |"); table.append("|  Facc  |"); table.append("|  FRac  |\n");
+        table.append("| Table  |"); table.append("|  Fabs  |"); table.append("|  Frel  |"); 
+        table.append("|  Facc  |"); table.append("|  FRac  |\n");
         table.append("------------------------------------------------\n");
         for(int i = 1; i < _table.length; i++) {
             for(int j = 0; j < _table[i].length; j++) {
@@ -136,9 +149,10 @@ public class Table {
             table.append("------------------------------------------------\n");
         }
         table.append("Total samples = "); table.append(total_samples()); table.append("\n");
-        table.append("Average = "); table.append(average()); table.append("\n");
-        if(!_rangeData)
+        if(!_rangeData) {
+        	table.append("Average = "); table.append(average()); table.append("\n");
             table.append("Median = "); table.append(median()); table.append("\n");
+        }
         return table.toString();
     }
 
@@ -147,3 +161,4 @@ public class Table {
 
 
 // TODO adapt this class to be set by JSON extension
+
