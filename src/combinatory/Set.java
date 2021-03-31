@@ -1,6 +1,5 @@
 package combinatory;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -60,6 +59,14 @@ public class Set<T> {
     }
     public double partof(){
         return Math.pow(2, _list.size());
+    }
+
+    public double arrow(Set<T> b) {     // |A->B|
+        return Math.pow(b.cardinal(), _list.size());
+    }
+
+    public double discontinious_arrow(Set<T> b) {
+        return Math.pow((b.cardinal() + 1), _list.size());
     }
 
 }
