@@ -1,3 +1,5 @@
+package tables;
+
 public class BidimensionalTable extends Table {
 
     public BidimensionalTable(int rows, int columns) {

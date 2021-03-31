@@ -1,22 +1,30 @@
+package tables;
+
 public class Table {
 
     private static double[][] _table = {{0,0}};
     private int _total;
-    private boolean _rangeData = false;
-    private double[] marks;
+    private static boolean _rangeData = false;
 
-    // Create the Frequency Table univariable template
+    // Create the Frequency Tables.Table univariable template
     public Table(int rows) {
         _table = new double[rows + 1][5];
+        /*_table[0][0] = Double.parseDouble("Tables.Table");
+        _table[0][1] = Double.parseDouble("Fabs");
+        _table[0][2] = Double.parseDouble("Frel");
+        _table[0][3] = Double.parseDouble("Facc");
+        _table[0][4] = Double.parseDouble("FRac");*/
         _total = 0;
-        marks = new double[rows];
 
     }
 
-    // Create a new Table
     public Table(int rows, int columns) {
-        _table = new double[rows + 1][columns + 1]; // this +1 is for the title-row and the title-column
+        _table = new double[rows + 1][columns + 1];
         _total = 0;
+    }
+
+    public static void setRange(boolean b) {
+        _rangeData = b;
     }
 
     public double[][] getTable() {
@@ -42,10 +50,9 @@ public class Table {
     // The array "samples[]" must be ordered
     public void addRangeSamples(String[] samples) {
         for(int i = 1; i < _table.length; i++) {
-            _table[i][0] = Integer.parseInt(samples[i]);
+            _table[i][0] = Double.parseDouble(samples[i]);
         }
         _rangeData = true;
-        // TODO put the marks on the array "marks[]"
     }
 
     // The array "fabs[]" must be ordered
@@ -65,17 +72,17 @@ public class Table {
     // Calculates and adds the Relative Rate to the table
     public void directRelRate() {
         int total = total_samples();
-        double aux = 0;
+        // double aux = 0;
         for(int i = 1; i < _table.length; i++) {
             _table[i][2] = _table[i][1] / total;
-            aux += _table[i][2];
+            // aux += _table[i][2];
         }
-        if(aux > 1.00)
+        /*if(aux > 1.00)
             System.out.println("[ERROR]: Relative Rate bigger than 1.0d\n");
         else if(aux < 1.00)
             System.out.println("[ERROR]: Relative Rate less than 1.0d\n");
         else
-            System.out.println("Relative Rate successfully calculated\n");
+            System.out.println("Relative Rate successfully calculated\n");*/
     }
 
     // Calculates and adds the Accumulated Absolute Rate to the table
@@ -115,30 +122,29 @@ public class Table {
 
     }*/
 
-    public double mode() {
-    	//The value with more Fabs
-    	int i = 1, j = 2;
-    	double max = 0.00d;
-    	while(i < _table.length && j < _table.length) {
-    		if(_table[i][1] > _table[j][1]) {
-    			max = _table[i][0];
-    			j++;
-    		}
-    		else {
-    			max = _table[j][1];
-    			i = j + 1;
-    		}
-    	}
-    	return max;
-    }
+    /*public double mode() {
+        //The value with more Fabs
+        int i = 1, j = 2;
+        double max = 0.00d;
+        while(i < _table.length && j < _table.length) {
+            if(_table[i][1] > _table[j][1]) {
+                max = _table[i][0];
+                j++;
+            }
+            else {
+                max = _table[j][0];
+                i = j + 1;
+            }
+        }
+        return max;
+    }*/
 
     // Prints the table
     public String toString() {
         StringBuilder table = new StringBuilder();
-        table.append("------------------------------------------------\n");
-        table.append("| Table  |"); table.append("|  Fabs  |"); table.append("|  Frel  |"); 
-        table.append("|  Facc  |"); table.append("|  FRac  |\n");
-        table.append("------------------------------------------------\n");
+        table.append("--------------------------------------------------\n");
+        table.append("| Tables.Table  |"); table.append("|  Fabs  |"); table.append("|  Frel  |"); table.append("|  Facc  |"); table.append("|  FRac  |\n");
+        table.append("--------------------------------------------------\n");
         for(int i = 1; i < _table.length; i++) {
             for(int j = 0; j < _table[i].length; j++) {
                 table.append("|  ");
@@ -146,12 +152,14 @@ public class Table {
                 table.append("  |");
             }
             table.append("\n");
-            table.append("------------------------------------------------\n");
+            table.append("--------------------------------------------------\n");
         }
         table.append("Total samples = "); table.append(total_samples()); table.append("\n");
+
         if(!_rangeData) {
-        	table.append("Average = "); table.append(average()); table.append("\n");
-            table.append("Median = "); table.append(median()); table.append("\n");
+            table.append("Average = "); table.append(String.format("%,2f", average())); table.append("\n");
+            table.append("Median = "); table.append(String.format("%,2f",median())); table.append("\n");
+            // table.append("Mode = "); table.append(mode()); table.append("\n");
         }
         return table.toString();
     }
@@ -161,4 +169,3 @@ public class Table {
 
 
 // TODO adapt this class to be set by JSON extension
-
